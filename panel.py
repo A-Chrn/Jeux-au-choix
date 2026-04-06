@@ -160,7 +160,26 @@ class Clicker_Panel(pm.panels.Panel):
         self.boutton2 = pm.ui.RectButton(
             x = self.centerx,
             y = self.centery,
-            anchor = "center"
+            anchor = "center",
+            width = 400,
+            height = 300,
+            filling_color = (39, 139, 245),
+            filling_color_hover = (26, 91, 161),
+            border_radius = 50,
+            text = "CLIQUE ICI",
+            font_color = (255, 255, 255),
+            font_size = 84,
+            panel = str(self)
+        )
+
+        self.argent = pm.ui.Text(
+            x = self.width * 0.02,
+            y = self.height * 0.05,
+            text = "Argent : ",
+            font_size = 70,
+            font_color = (255, 255, 255),
+            panel = str(self),
+
         )
     
     def draw_back(self, surface):
