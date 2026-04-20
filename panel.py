@@ -138,9 +138,10 @@ class Morpion_Panel(pm.panels.Panel):
         pm.states.activate("choix")
 
 class Clicker_Panel(pm.panels.Panel):
-    def __init__(self):
+    def __init__(self,):
         super().__init__("CLICKER", rect=pygame.Rect(0, 0, 1920, 1080), centered=True)
         self.background = (67, 67, 70)
+        self.money = 0
 
         self.boutton1 = pm.ui.RectButton(
             x = self.width * 0.05, 
@@ -169,22 +170,38 @@ class Clicker_Panel(pm.panels.Panel):
             text = "CLIQUE ICI",
             font_color = (255, 255, 255),
             font_size = 84,
+            callback = self.click,
             panel = str(self)
         )
 
-        self.argent = pm.ui.Text(
+        self.argent_text = pm.ui.Text(
             x = self.width * 0.02,
             y = self.height * 0.05,
             text = "Argent : ",
             font_size = 70,
             font_color = (255, 255, 255),
             panel = str(self),
+        )
 
+        self.argent = pm.ui.Text(
+            x = self.width * 0.13,
+            y = self.height * 0.052,
+            text = str(0),
+            font_color= (255, 255, 255),
+            font_size = 70,
+            bold = True,
+            panel = str(self),
         )
     
     def draw_back(self, surface):
         surface.fill(self.background)
+        surface.blit(self.argent.surface, self.argent.rect)
+
         return super().draw_back(surface)
     
     def handle_start(self):
         pm.states.activate("choix")
+
+    def click(self):
+        self.money += 1
+        self.argent.text = f"{self.money} €"

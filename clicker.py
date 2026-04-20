@@ -8,3 +8,13 @@ class Clicker(pm.states.State):
 
         self.panel = Clicker_Panel()
         self.bind_panel(self.panel)
+
+    def update(self):
+        ...
+
+    def on_enter(self):
+        self.argent = 0
+        self.panel.argent.text = str(self.argent)
+
+        return super().on_enter()
+        
