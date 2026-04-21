@@ -1,7 +1,7 @@
 import pygame
 import pygame_manager as pm
 from menu import Menu
-from Choix import Choix
+from choix import Choix
 from morpion import Morpion
 from clicker import Clicker
 
@@ -19,6 +19,9 @@ class Main():
     def update(self):
         pm.screen.clear((70, 70, 85))
         pm.states.update()
+        
+    def final(self):
+        self.clicker.save()
 
 main = Main()
-pm.run(main.update)
+pm.run(main.update, main.final)

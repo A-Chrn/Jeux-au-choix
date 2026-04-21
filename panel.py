@@ -129,6 +129,18 @@ class Morpion_Panel(pm.panels.Panel):
             callback = self.handle_start, 
             panel = str(self)
             )
+        
+        self.grille_image = pm.ui.Image(
+            x = self.centerx,
+            y = self.centery,
+            image_path = "grille_morpion.png",
+            width = 900,
+            height = 900,
+            anchor ="center",
+            panel = str(self),
+            zorder = 1
+        )
+
     
     def draw_back(self, surface):
         surface.fill(self.background)
@@ -142,6 +154,9 @@ class Clicker_Panel(pm.panels.Panel):
         super().__init__("CLICKER", rect=pygame.Rect(0, 0, 1920, 1080), centered=True)
         self.background = (67, 67, 70)
         self.money = 0
+        pm.audio.add_sound("click", "click.mp3", 0.3, 0, "default")
+        if pm.data.exists("save.json") :
+            self.money = pm.data.load("save.json")["money"]
 
         self.boutton1 = pm.ui.RectButton(
             x = self.width * 0.05, 
@@ -158,20 +173,18 @@ class Clicker_Panel(pm.panels.Panel):
             panel = str(self)
             )
         
-        self.boutton2 = pm.ui.RectButton(
+        self.boutton2 = pm.ui.CircleButton(
             x = self.centerx,
             y = self.centery,
-            anchor = "center",
-            width = 400,
-            height = 300,
+            radius = 175,
             filling_color = (39, 139, 245),
             filling_color_hover = (26, 91, 161),
-            border_radius = 50,
             text = "CLIQUE ICI",
             font_color = (255, 255, 255),
             font_size = 84,
             callback = self.click,
-            panel = str(self)
+            panel = str(self),
+
         )
 
         self.argent_text = pm.ui.Text(
@@ -201,7 +214,9 @@ class Clicker_Panel(pm.panels.Panel):
     
     def handle_start(self):
         pm.states.activate("choix")
+        pm.data.save({"money" : self.money}, "save.json")
 
     def click(self):
         self.money += 1
         self.argent.text = f"{self.money} €"
+        pm.audio.play_sound("click")

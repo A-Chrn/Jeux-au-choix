@@ -12,9 +12,11 @@ class Clicker(pm.states.State):
     def update(self):
         ...
 
+    def save(self):
+        pm.data.save({"money" : self.panel.money}, "save.json")
+
     def on_enter(self):
-        self.argent = 0
-        self.panel.argent.text = str(self.argent)
+        self.panel.argent.text = f"{self.panel.money} €"
 
         return super().on_enter()
         
