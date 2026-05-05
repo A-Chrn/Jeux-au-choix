@@ -54,8 +54,10 @@ class Grille :
     def verif_end(self, symboles):
         for symbole in symboles:
             if self.verif_gagnant(symbole):
+                pm.states.activate("Game_Over")
                 return symbole
         if all(case != 0 for ligne in self.tab for case in ligne):
+            pm.states.activate("Game_Over")
             return -1
         return 0
 

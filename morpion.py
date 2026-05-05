@@ -44,6 +44,7 @@ class Morpion(pm.states.State):
 
     def on_enter(self):
         self.generate(self.x, self.y, self.taille)
+        self.grille.nettoyer()
         return super().on_enter()
 
     def on_exit(self):

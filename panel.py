@@ -220,3 +220,63 @@ class Clicker_Panel(pm.panels.Panel):
         self.money += 1
         self.argent.text = f"{self.money} €"
         pm.audio.play_sound("click")
+
+class Game_Over_Panel(pm.panels.Panel):
+    def __init__(self):
+        super().__init__("GAME_OVER", rect=pygame.Rect(0, 0, 1920, 1080), centered=True)
+        self.background = (67, 67, 70)
+
+        self.title = pm.ui.Text(
+            x=self.width * 0.5,
+            y=self.height * 0.2,
+            anchor="center",
+            text="Le gagnant est : ",
+            font=pygame.font.SysFont("arial", 84),
+            font_size=84,
+            font_color=(255, 0, 0),
+            panel=str(self)
+        )
+
+        self.boutton1 = pm.ui.RectButton(
+            x = self.width * 0.5, 
+            y = self.height * 0.5, 
+            anchor = "center",
+            width = 400, 
+            height = 120, 
+            filling_color = (0, 0, 0), 
+            filling_color_hover = (46, 46, 46),
+            border_radius = 20,
+            text = "REJOUER",
+            font_color=(255, 255, 255),
+            hover_scale_ratio=1.05,
+            hover_scale_duration=0.05,
+            callback = self.handle_start, 
+            panel = str(self)
+            )
+        
+        self.boutton2 = pm.ui.RectButton(
+            x = self.width * 0.5, 
+            y = self.height * 0.7, 
+            anchor = "center",
+            width = 400, 
+            height = 120,
+            filling_color = (0, 0, 0),
+            filling_color_hover = (46, 46, 46),
+            border_radius = 20,
+            text = "RETOUR AU CHOIX",
+            font_color=(255, 255, 255),
+            hover_scale_ratio=1.05,
+            hover_scale_duration=0.05,
+            callback = self.handle_start2,
+            panel = str(self)
+            )
+    
+    def draw_back(self, surface):
+        surface.fill(self.background)
+        return super().draw_back(surface)
+    
+    def handle_start(self):
+        pm.states.activate("Morpion")
+    
+    def handle_start2(self):
+        pm.states.activate("choix")
