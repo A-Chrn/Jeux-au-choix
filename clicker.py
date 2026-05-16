@@ -19,4 +19,5 @@ class Clicker(pm.states.State):
         self.panel.argent.text = f"{self.panel.money} €"
 
         return super().on_enter()
+    
         

@@ -22,12 +22,7 @@ class Grille :
         self.generer(self.tour, x, y)
         self.tour = int(((self.tour * 2 - 3) * -1 + 3) / 2)
         resultat = self.verif_end(self.symboles.values())
-        if resultat == 0 :
-            return 
-        elif resultat == -1 :
-            print(" Aucun gagnant ")
-        else : 
-            print(" Le gagnant est : ", resultat)
+        return resultat
 
     def verif_lignes(self, symbole):
         for ligne in self.tab:

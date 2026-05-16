@@ -158,6 +158,7 @@ class Clicker_Panel(pm.panels.Panel):
         if pm.data.exists("save.json") :
             self.money = pm.data.load("save.json")["money"]
 
+
         self.boutton1 = pm.ui.RectButton(
             x = self.width * 0.05, 
             y = self.height * 0.95, 
@@ -205,7 +206,9 @@ class Clicker_Panel(pm.panels.Panel):
             bold = True,
             panel = str(self),
         )
-    
+
+        
+
     def draw_back(self, surface):
         surface.fill(self.background)
         surface.blit(self.argent.surface, self.argent.rect)
@@ -220,6 +223,31 @@ class Clicker_Panel(pm.panels.Panel):
         self.money += 1
         self.argent.text = f"{self.money} €"
         pm.audio.play_sound("click")
+    
+    def on_enter(self):
+        i = 2
+        self.multiplicateur = pm.ui.RectButton(
+            x = self.width * 0.9,
+            y = self.height * 0.1,
+            width = 300,
+            height = 80,
+            anchor = "center",
+            filling_color = (39, 139, 245),
+            filling_color_hover = (26, 91, 161),
+            border_radius = 20,
+            text = f"x{i} / click",
+            font_color = (255, 255, 255),
+            callback = self.double_click,
+            panel = str(self)
+        )
+        return super().on_enter()
+    
+    def double_click(self):
+        if self.money >= 50:
+            self.money -= 10
+            self.argent.text = f"{self.money} €"
+            i = int(self.multiplicateur._text[1])
+
 
 class Game_Over_Panel(pm.panels.Panel):
     def __init__(self):
@@ -280,3 +308,9 @@ class Game_Over_Panel(pm.panels.Panel):
     
     def handle_start2(self):
         pm.states.activate("choix")
+
+    def set_winner(self, winner):
+        if winner == -1:
+            self.title.text = "Egalité !"
+        else:
+            self.title.text = f"Le gagnant est : Joueur {winner}"

@@ -1,6 +1,5 @@
 import pygame
 import pygame_manager as pm
-from game_over import Game_Over
 from menu import Menu
 from choix import Choix
 from morpion import Morpion
@@ -13,7 +12,6 @@ class Main():
         self.choix = Choix()
         self.morpion = Morpion()
         self.clicker = Clicker()
-        self.game_over = Game_Over()
 
         pm.states.activate("MENU")
         pm.screen.set_vsync(True)

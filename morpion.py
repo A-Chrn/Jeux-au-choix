@@ -2,11 +2,13 @@ import pygame
 import pygame_manager as pm
 from panel import Morpion_Panel
 from grille import Grille
+from game_over import Game_Over
 
 class Morpion(pm.states.State):
     def __init__(self):
         super().__init__("Morpion")
         
+        self.game_over = Game_Over()
         self.panel = Morpion_Panel()
         self.bind_panel(self.panel)
 
@@ -40,7 +42,9 @@ class Morpion(pm.states.State):
 
     def place(self, id):
         x, y = id
-        self.grille.placer(x, y)
+        output = self.grille.placer(x, y)
+        if output != 0:
+            self.game_over.panel.set_winner(output)
 
     def on_enter(self):
         self.generate(self.x, self.y, self.taille)
