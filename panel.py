@@ -154,7 +154,9 @@ class Clicker_Panel(pm.panels.Panel):
         super().__init__("CLICKER", rect=pygame.Rect(0, 0, 1920, 1080), centered=True)
         self.background = (67, 67, 70)
         self.money = 0
-        pm.audio.add_sound("click", "click.mp3", 0.3, 0, "default")
+        self.multiplier = 1
+        self.upgrade_price = 50
+        pm.audio.add_sound("click", "click.mp3", 0.2, 0, "default")
         if pm.data.exists("save.json") :
             self.money = pm.data.load("save.json")["money"]
 
@@ -190,7 +192,7 @@ class Clicker_Panel(pm.panels.Panel):
 
         self.argent_text = pm.ui.Text(
             x = self.width * 0.02,
-            y = self.height * 0.05,
+            y = self.height * 0.08,
             text = "Argent : ",
             font_size = 70,
             font_color = (255, 255, 255),
@@ -199,15 +201,13 @@ class Clicker_Panel(pm.panels.Panel):
 
         self.argent = pm.ui.Text(
             x = self.width * 0.13,
-            y = self.height * 0.052,
+            y = self.height * 0.082,
             text = str(0),
             font_color= (255, 255, 255),
             font_size = 70,
             bold = True,
             panel = str(self),
         )
-
-        
 
     def draw_back(self, surface):
         surface.fill(self.background)
@@ -217,15 +217,14 @@ class Clicker_Panel(pm.panels.Panel):
     
     def handle_start(self):
         pm.states.activate("choix")
-        pm.data.save({"money" : self.money}, "save.json")
+        pm.data.save({"money" : self.money}, "save.json", )
 
     def click(self):
-        self.money += 1
+        self.money += self.multiplier
         self.argent.text = f"{self.money} €"
         pm.audio.play_sound("click")
     
     def on_enter(self):
-        i = 2
         self.multiplicateur = pm.ui.RectButton(
             x = self.width * 0.9,
             y = self.height * 0.1,
@@ -235,18 +234,43 @@ class Clicker_Panel(pm.panels.Panel):
             filling_color = (39, 139, 245),
             filling_color_hover = (26, 91, 161),
             border_radius = 20,
-            text = f"x{i} / click",
             font_color = (255, 255, 255),
             callback = self.double_click,
-            panel = str(self)
+            panel = str(self),
         )
+
+        self.bouton_text = pm.ui.Text(
+            x = self.width * 0.9,
+            y = self.height * 0.1,
+            text = f"x{self.multiplier + 1} / click = {self.upgrade_price} €",
+            font_color = (255, 255, 255),
+            font_size = 50,
+            anchor = "center",
+            panel = str(self),
+            zorder=1
+        )
+
+        self.multiplicateur_text = pm.ui.Text(
+            x = self.width // 2,
+            y = self.height * 0.1,
+            text = f"x{self.multiplier} / click",
+            font_color = (255, 255, 255),
+            font_size = 70,
+            anchor = "center",
+            panel = str(self),
+            zorder=1
+        )
+
         return super().on_enter()
     
     def double_click(self):
-        if self.money >= 50:
-            self.money -= 10
+        if self.money >= self.upgrade_price:
+            self.money -= self.upgrade_price
+            self.multiplier += 1
+            self.upgrade_price *= 2
             self.argent.text = f"{self.money} €"
-            i = int(self.multiplicateur._text[1])
+            self.bouton_text.text = f"x{self.multiplier + 1} / click = {self.upgrade_price} €"
+            self.multiplicateur_text.text = f"x{self.multiplier} / click"
 
 
 class Game_Over_Panel(pm.panels.Panel):
